@@ -62,7 +62,6 @@ Vue.component('v-form', VForm)
 Vue.component('v-grid', VGrid)
 Vue.component('v-field', VField)
 
-
 import * as firebase from 'firebase'
 
 var configfirebase = {
@@ -75,9 +74,7 @@ var configfirebase = {
 }
 
 firebase.initializeApp(configfirebase)
-var db = firebase.database(),
-    auth = firebase.auth()
-var proveedor = new firebase.auth.GoogleAuthProvider()
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -87,28 +84,10 @@ new Vue({
   render: h => h(App),
   mounted () {
     // autentificacion
-    auth.onAuthStateChanged(function (user) {
-      if (user) {
-        console.info('conectado', user)
-          // User is signed in.
-      } else {
-        console.warn('no conectado')
-          // No user is signed in.
-      }
-    })
   },
 
   methods: {
     conectar () {
-      auth().signInWithPopup(proveedor).then(function (result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken
-          // The signed-in user info.
-        var user = result.user
-        // ...
-      }).catch(function () {
-
-      })
     },
     back () {
       this.$router.go(-1)
