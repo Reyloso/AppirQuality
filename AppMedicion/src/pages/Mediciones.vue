@@ -1,4 +1,5 @@
-<template><v-card>
+<template>
+  <v-card>
     <v-card-title>
       <h4>Mediciones</h4>
       <v-spacer></v-spacer>

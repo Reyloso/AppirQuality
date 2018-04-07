@@ -61,20 +61,6 @@ import VField from './components/Field.vue'
 Vue.component('v-form', VForm)
 Vue.component('v-grid', VGrid)
 Vue.component('v-field', VField)
-
-import * as firebase from 'firebase'
-
-var configfirebase = {
-  apiKey: 'AIzaSyDuaWw7MIzM1nTDR0iID5xvKy2Dh3dTJns',
-  authDomain: 'appmedicion-ucc.firebaseapp.com',
-  databaseURL: 'https://appmedicion-ucc.firebaseio.com',
-  projectId: 'appmedicion-ucc',
-  storageBucket: 'appmedicion-ucc.appspot.com',
-  messagingSenderId: '510414957297'
-}
-
-firebase.initializeApp(configfirebase)
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

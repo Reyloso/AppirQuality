@@ -3,6 +3,7 @@
   <div class="v-container">
     <highcharts :options="options" ref="highcharts"></highcharts>
     <highcharts :options="options" ref="highcharts"></highcharts>
+
   </div>
 
 </template>
@@ -12,6 +13,7 @@
 import Vue from 'vue'
 import VueHighcharts from 'vue-highcharts'
 import Highcharts from 'highcharts/highstock'
+import {mixin} from '../mixins'
 
 Vue.use(VueHighcharts, { Highcharts })
 
@@ -83,7 +85,6 @@ export default {
       }
     }
   },
-  methods: {
-  }
+  mixins: [mixin]
 }
   </script>

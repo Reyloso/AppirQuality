@@ -1,10 +1,9 @@
 <template lang="pug">
-v-app(:dark="dark",standalone)
-  v-navigation-drawer(style="backgroud-color:#000;" v-model='drawer',:mini-variant.sync="mini", persistent,enable-resize-watcher, :dark="dark")
+v-app(standalone)
+  v-navigation-drawer(style="backgroud-color:#000;" v-model='drawer',:mini-variant.sync="mini", persistent,enable-resize-watcher)
     .pa-3.text-xs-center(v-show="!mini")
       div.display-2.py-4 AppirQuality
       <img class="mainlogo" src="/static/logo.png" alt="John">
-
 
     .pa-3.text-xs-center(v-show="mini")
       .display-2 <v-avatar> <img src="/static/logo.png" alt="John"></v-avatar>
@@ -35,8 +34,8 @@ v-app(:dark="dark",standalone)
           v-list-tile-action(v-if='item.subAction')
             v-icon.success--text {{ item.subAction }}
 
-  v-toolbar.darken-1(fixed,dark,:class="theme" )
-    v-toolbar-side-icon(dark, v-on:click.prevent="changedrawer")
+  v-toolbar.darken-1(fixed,:class="theme" )
+    v-toolbar-side-icon(v-on:click.prevent="changedrawer")
     v-toolbar-title {{$t(pageTitle)}}
     <v-spacer></v-spacer>
       v-spacer
@@ -64,7 +63,6 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-
       theme: 'primary',
       mini: true,
       drawer: true,
