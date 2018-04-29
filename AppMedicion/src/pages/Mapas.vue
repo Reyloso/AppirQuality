@@ -16,6 +16,7 @@ v-for="(m, index) in markers"
 <script>
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import {mixin} from '../mixins'
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -24,6 +25,7 @@ Vue.use(VueGoogleMaps, {
   }
 })
 export default {
+  mixins: [mixin],
   data () {
     return {
       modal: false,

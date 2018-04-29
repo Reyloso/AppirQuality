@@ -6,11 +6,10 @@ div
 
         form(v-model="valid")
             v-text-field(
-              label="Usuario"
-              v-model="nombre"
-              :rules="nameRules"
-              :counter="10"
-              required)
+            label="E-mail"
+            v-model="email"
+            :rules="emailRules"
+            required)
             v-text-field(
               name="input-10-1"
               label="Contraseña"
@@ -22,7 +21,7 @@ div
               :type="e1 ? 'password' : 'text'"
               required)
         <div class="btn-gmail">
-            <v-btn class="entrar" dark large><i class="material-icons icon">input</i> Iniciar Sesion  </v-btn>
+            <v-btn class="entrar" dark large @click="login"><i class="material-icons icon">input</i> Iniciar Sesion  </v-btn>
         </div>
         <div class="btn-gmail">
             <v-btn color="error" dark large><i class="material-icons icon">gmail</i> Iniciar Con Google</v-btn>
@@ -31,27 +30,37 @@ div
 </template>
 
 <script>
+import firebase from 'firebase'
+import {mixin} from '../mixins'
 
 export default {
-
+  mixins: [mixin],
   data () {
     return {
       e1: true,
       valid: false,
-
       model: {
-        nombre: 'admin',
-        password: '123456'
-      },
-
-      fields: {
-        username: { label: 'Usuario' },
-        password: { label: 'Ingrese su contraseña', type: 'password' }
+        email: '',
+        password: ''
       },
       show: false
     }
   },
+  created: function () {
+    this.autenticacion()
+  },
   methods: {
+    login () {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code
+        var errorMessage = error.message
+        console.log(errorCode)
+        console.log(errorMessage)
+      }).then(function () {
+        this.autenticacion()
+      })
+    }
   },
   mounted () {
   }

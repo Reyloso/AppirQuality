@@ -18,6 +18,7 @@ import {mixin} from '../mixins'
 Vue.use(VueHighcharts, { Highcharts })
 
 export default {
+  mixins: [mixin],
   data () {
     return {
       options: {
@@ -84,7 +85,6 @@ export default {
         }]
       }
     }
-  },
-  mixins: [mixin]
+  }
 }
   </script>

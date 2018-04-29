@@ -62,13 +62,16 @@ Vue.component('v-form', VForm)
 Vue.component('v-grid', VGrid)
 Vue.component('v-field', VField)
 /* eslint-disable no-new */
+import {mixin} from './mixins'
 new Vue({
+  mixins: [mixin],
   el: '#app',
   i18n,
   store,
   router,
   render: h => h(App),
   mounted () {
+
     // autentificacion
   },
 
@@ -80,6 +83,7 @@ new Vue({
     }
   },
   created () {
+    this.autenticacion()
     // this.$http.get('/users/1').then(({data}) => console.log(data))
   }
 })

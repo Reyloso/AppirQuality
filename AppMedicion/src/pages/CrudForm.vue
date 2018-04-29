@@ -3,18 +3,18 @@ v-layout
   v-flex(xs8)
     v-form(v-model="model", v-bind="$data", :method="method", :action="action", @success="onSuccess")
       div(slot="buttons",class="my-4")
-        
-        v-btn(dark, class="grey",@click.native="$root.back()") 
-          v-icon(dark, left) chevron_left 
+
+        v-btn(dark, class="grey",@click.native="$root.back()")
+          v-icon(dark, left) chevron_left
           span {{$t('Back')}}
         v-btn(primary, dark, type='submit') {{$t('Submit')}}
           v-icon(right, dark) send
 </template>
 
 <script>
-
+import {mixin} from '../mixins'
 export default {
-
+  mixins: [mixin],
   data () {
     return {
       model: {},

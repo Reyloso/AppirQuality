@@ -31,10 +31,12 @@
   </v-card></template>
 <script>
 import ws from 'adonis-websocket-client'
+import {mixin} from '../mixins'
 const io = ws(global.config.url, {})
 const client = io.channel('chat')
 
 export default {
+  mixins: [mixin],
   data () {
     return {
       search: '',

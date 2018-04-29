@@ -19,11 +19,6 @@ v-app(standalone)
             v-list-tile-action
               v-icon() keyboard_arrow_down
 
-          v-list-tile(v-for='subItem in item.items', :key='subItem.href',:to='subItem.href', v-bind:router='!subItem.target', ripple, v-bind:disabled='subItem.disabled', v-bind:target='subItem.target')
-            v-list-tile-action(v-if='subItem.icon')
-              v-icon.success--text {{ subItem.icon }}
-            v-list-tile-content
-              v-list-tile-title {{ $t(subItem.title) }}
         v-subheader(v-else-if='item.header') {{ item.header }}
         v-divider(v-else-if='item.divider')
         v-list-tile(v-else,:to='item.href', router, ripple, v-bind:disabled='item.disabled', :title="item.title")
@@ -34,6 +29,8 @@ v-app(standalone)
           v-list-tile-action(v-if='item.subAction')
             v-icon.success--text {{ item.subAction }}
 
+
+
   v-toolbar.darken-1(fixed,:class="theme" )
     v-toolbar-side-icon(v-on:click.prevent="changedrawer")
     v-toolbar-title {{$t(pageTitle)}}
@@ -41,12 +38,10 @@ v-app(standalone)
       v-spacer
 
       <v-btn fab small >
-        <small>usename</small>
         <img class="avatars" src="/static/rey.jpg" alt="John">
-        <small></small>
+        <h1 v-model="NombreUsuario"></h1>
       </v-btn>
 
-      v-avatar
 
   main
     v-container.pa-4(fluid)
@@ -54,25 +49,33 @@ v-app(standalone)
         .py-2
           v-slide-y-transition(mode='out-in')
             router-view
+
+
 </template>
 
 <script>
 
 import { mapState } from 'vuex'
+import {mixin} from '../mixins'
 
 export default {
+  mixins: [mixin],
   data () {
     return {
       theme: 'primary',
       mini: true,
       drawer: true,
-      locales: ['en-US']
+      locales: ['es-co'],
+      NombreUsuario: '',
+      EmailUsuario: '',
+      photoUrl: ''
     }
   },
   computed: {
     ...mapState(['message', 'menu', 'pageTitle'])
   },
   methods: {
+
     changeLocale (to) {
       global.helper.ls.set('locale', to)
       this.$i18n.locale = to
@@ -85,15 +88,9 @@ export default {
       } else {
         this.drawer = true
       }
-    },
-    fetchMenu () {
-      // fetch menu from server
-      // this.$http.get('menu').then(({data}) => this.$store.commit('setMenu', data))
     }
   },
-
   created () {
-    this.fetchMenu()
   }
 }
 </script>
@@ -137,14 +134,18 @@ export default {
         border-radius: 87%;
     }
   .avatars {
-      height: 40px;
-      width: 40px;
+      height: 50px;
+      width: 50px;
       border-radius: 87%;
     }
 
     .list--dense .list__tile .icon {
     font-size: 21px;
     color: #fff;
+  }
+  .mainlogo{
+
+
   }
 
 </style>

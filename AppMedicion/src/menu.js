@@ -8,6 +8,5 @@ export default [
   { divider: true },
   { 'header': 'System' },
   { 'href': '/usuarios', 'title': 'Usuarios', 'icon': 'people' },
-  { 'href': '/settings', 'title': 'Settings', 'icon': 'settings' },
-  { 'href': '/login', 'icon': 'lock', 'title': 'Logout' }
+  { 'href': '/settings', 'title': 'Settings', 'icon': 'settings' }
 ]

@@ -25,9 +25,9 @@ const router = new Router({
 
     route('/', 'Main', null, [
       route('/', 'Home', 'Inicio'),
-      route('/Mediciones', 'Mediciones', 'grid'),
-      route('/Mapas', 'Mapas', 'grid'),
-      route('/Nueva/medicion', 'CrudGrid', 'grid'),
+      route('/Mediciones', 'Mediciones'),
+      route('/Mapas', 'Mapas'),
+      route('/Nueva/medicion', 'CrudGrid'),
       route('/example', 'Example'),
       route('/settings', 'Settings')
 
