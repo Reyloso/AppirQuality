@@ -1,5 +1,30 @@
 <template>
-  <v-card>
+  <div>
+  <v-btn color="primary" class="mb-2 button-add-new">Agregar</v-btn>
+    <v-dialog v-model="modaledit" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Editar</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm12 md12>
+                <v-text-field label="Nombre" v-model="editedItem.Nombre"></v-text-field>
+                <v-text-field label="Lugar" v-model="editedItem.Lugar"></v-text-field>
+                <v-select label="Tipo"  v-model="editedItem.Tipo" :items="ite" required >
+                </v-select>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="actualizar()">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-card-title>
       <h4>Mediciones</h4>
       <v-spacer></v-spacer>
@@ -8,174 +33,177 @@
         label="Buscar"
         single-line
         hide-details
-        v-model="search"
-      ></v-text-field>
+        v-model="search"></v-text-field>
     </v-card-title>
     <v-data-table
-      :headers="headers"
-      :items="items"
-      :search="search"
-    >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.calories }}</td>
-        <td class="text-xs-right">{{ props.item.fat }}</td>
-        <td class="text-xs-right">{{ props.item.carbs }}</td>
-        <td class="text-xs-right">{{ props.item.protein }}</td>
-        <td class="text-xs-right">{{ props.item.iron }}</td>
-      </template>
-      <v-alert slot="no-results" :value="true" color="error" icon="warning">
-        Your search for "{{ search }}" found no results.
-      </v-alert>
-    </v-data-table>
-  </v-card></template>
+   :headers="headers"
+   :items="items"
+   class="elevation-1"
+   prev-icon="mdi-menu-left"
+   next-icon="mdi-menu-right"
+   sort-icon="mdi-menu-down"
+   :search="search">
+   <template slot="items" slot-scope="props">
+     <router-link :to="'/detalle/medicion/' + props.item.Id" > <td>{{ props.item.Nombre }}</td> </router-link>
+     <td class="text-xs-right">{{ props.item.Fecha }}</td>
+     <td class="text-xs-right">{{ props.item.Usuario }}</td>
+     <td class="text-xs-right">{{ props.item.Lugar }}</td>
+     <td class="text-xs-right">{{ props.item.Tipo }}</td>
+     <td class="justify-center layout px-0">
+       <v-btn icon class="mx-0" @click="editItem(props.item)">
+         <v-icon class="button-edit" color="teal">edit</v-icon>
+       </v-btn>
+       <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+         <v-icon class="button-delete" color="pink">delete</v-icon>
+       </v-btn>
+     </td>
+   </template>
+   <v-alert slot="no-results" :value="true" color="error" icon="warning">
+     Your search for "{{ search }}" found no results.
+   </v-alert>
+ </v-data-table>
+  </div>
+  </template>
 <script>
-import ws from 'adonis-websocket-client'
 import {mixin} from '../mixins'
-const io = ws(global.config.url, {})
-const client = io.channel('chat')
+import firebase from 'firebase'
 
 export default {
   mixins: [mixin],
   data () {
     return {
       search: '',
+      modaledit: false,
+      Lugar: '',
+      ite: [
+        'Estatica',
+        'Dinamica'
+      ],
       headers: [
         {
-          text: 'Ubicacion',
-          align: 'center',
+          text: 'Nombre Medicion',
+          align: 'left',
           sortable: true,
-          value: 'name'
+          value: 'Nombre'
         },
-          { text: 'Fecha', value: 'calories' },
-          { text: 'Usuario', value: 'fat' },
-          { text: 'Gps', value: 'carbs' },
-          { text: 'Humedad', value: 'protein' },
-          { text: 'Temperatura', value: 'iron' }
+          { text: 'Fecha', value: 'Fecha' },
+          { text: 'Usuario', align: 'center', value: 'Usuario' },
+          { text: 'Lugar', value: 'Lugar' },
+          { text: 'Tipo', value: 'Tipo' },
+          { text: 'Actions', value: 'name', sortable: false }
       ],
-      items: [
-        {
-          value: false,
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1%'
-        },
-        {
-          value: false,
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: '1%'
-        },
-        {
-          value: false,
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: '7%'
-        },
-        {
-          value: false,
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: '8%'
-        },
-        {
-          value: false,
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: '16%'
-        },
-        {
-          value: false,
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: '0%'
-        },
-        {
-          value: false,
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: '2%'
-        },
-        {
-          value: false,
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: '45%'
-        },
-        {
-          value: false,
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: '22%'
-        },
-        {
-          value: false,
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: '6%'
-        }
-      ]
+      items: [],
+      editedIndex: -1,
+      editedItem: {
+        Nombre: '',
+        Tipo: '',
+        Lugar: ''
+      },
+      defaultItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0
+      }
     }
   },
+  computed: {
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
+  created: function () {
+  },
   methods: {
-    send () {
-      if (this.message.length < 1) {
-        return false
+    listar () {
+      var datos = ''
+      var datos2 = []
+      var mediciones = firebase.database().ref('Mediciones/')
+      mediciones.on('value', function (snapshot) {
+        datos2.length = 0
+        datos = snapshot.val()
+        for (var key in datos) {
+          var id = key
+          var nombre = datos[key].Nombre
+          var fecha = datos[key].Fecha
+          var usuario = datos[key].Usuario
+          var lugar = datos[key].Lugar
+          var tipo = datos[key].Tipo
+          var gps = datos[key].Gps
+          datos2.push({
+            Id: id,
+            Nombre: nombre,
+            Fecha: fecha,
+            Usuario: usuario,
+            Lugar: lugar,
+            Tipo: tipo,
+            Gps: gps
+          })
+        }
+      })
+      this.items = datos2
+    },
+    actualizar () {
+      var key = this.editedItem.Id
+      firebase.database().ref('Mediciones/' + key).update({
+        Nombre: this.editedItem.Nombre,
+        Tipo: this.editedItem.Tipo,
+        Gps: this.editedItem.Gps,
+        Lugar: this.editedItem.Lugar,
+        Fecha: this.editedItem.Fecha,
+        Usuario: this.editedItem.Usuario
+      })
+      this.modaledit = false
+    },
+    editItem (item) {
+      this.editedItem = {
+        Id: item.Id,
+        Nombre: item.Nombre,
+        Fecha: item.Fecha,
+        Usuario: item.Usuario,
+        Lugar: item.Lugar,
+        Tipo: item.Tipo,
+        Gps: item.Gps
       }
-      client.emit('message', this.message)
-      this.message = ''
+      this.modaledit = true
+    },
+    deleteItem (item) {
+      var itemBorrar = firebase.database().ref('Mediciones/' + item.Id)
+      itemBorrar.remove()
+    },
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
     }
   },
   mounted () {
-    client.connect((error, connected) => {
-      if (error) {
-        this.showWarning = true
-        return false
-        // do something
-      }
-      console.log('connected: ', connected)
-      client.emit('message', 'hello')
-      // all good
-    })
-    client.on('error', (message) => {
-      console.log(message)
-    })
-    client.on('message', (message) => {
-      this.list.push(message)
-      if (this.list.length > this.maxLength) {
-        this.list.shift()
-      }
-    })
+    this.listar()
   }
 }
 </script>
+<style>
+.a {
+  text-decoration: none !important;
+}
+.button-add-new{
+  background-color: #21ccad !important;
+}
+.button-edit{
+  color: #21ccad !important;
+}
+.button-delete {
+  color: #f00 !important;
+}
+
+.table__overflow {
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+</style>

@@ -6,19 +6,33 @@ require('firebase/auth')
 export const mixin = {
   data: () => ({
     Ubicacion: '',
-    medicion: null
+    Polucion: '',
+    Temperatura: '',
+    Humedad: '',
+    Gas: '',
+    medicion: null,
+    direction: 'top',
+    fab: false,
+    fling: false,
+    hover: false,
+    tabs: null,
+    top: false,
+    right: true,
+    bottom: true,
+    left: false,
+    transition: 'slide-y'
   }),
   created: function () {
     this.conectarParticle()
+    this.autenticacion()
+  },
+  computed: {
   },
   methods: {
     autenticacion () {
       firebase.auth().onAuthStateChanged(user => {
         if (user != null) {
-          console.log('usuario autenticado')
-          this.$router.push({ path: `/` })
         } else {
-          console.log('usuario no autenticado')
           this.$router.push({ path: `/login` })
         }
       })
@@ -32,7 +46,6 @@ export const mixin = {
       var eventSource = new EventSource(API_URL + id + '/events/?access_token=' + token)
 
       eventSource.addEventListener('open', (e) => {
-        console.log('Conectado!')
       }, false)
 
       eventSource.addEventListener('error', (e) => {
@@ -43,32 +56,71 @@ export const mixin = {
         var parsedData = JSON.parse(e.data)
         var data = JSON.parse(parsedData.data)
         this.Ubicacion = data.Gpsloc
-        console.log(data.Gpsloc)
+        this.Polucion = data.Concentracion
+        this.Gas = data.Gas
+        this.Humedad = data.Humedad
+        this.Temperatura = data.Temperatura
       }, false)
       return eventSource
     },
     guardarfirebase (lugar, Nombre, select) {
+      var user = firebase.auth().currentUser
+      var date = new Date()
+      var fecha = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
+      var lat = this.Ubicacion.lat
+      var lng = this.Ubicacion.lng
       db.ref('Mediciones/').push({
         Nombre: Nombre,
         Tipo: select,
-        gps: this.Ubicacion,
-        Lugar: lugar
+        Gps: {
+          lat: lat,
+          lng: lng
+        },
+        Lugar: lugar,
+        Fecha: fecha,
+        Usuario: user.displayName
       }).then((data) => {
       })
-      var ref = db.ref('Mediciones/')
-      ref.on('child_added', function (snap) {
-        var valor = snap.val()
-        console.log('added:', snap.key)
-        this.medicion = {
-          id: snap.key,
-          Nombre: valor.Nombre,
-          Tipo: valor.Tipo,
-          gps: valor.gps,
-          Lugar: valor.lugar
+    },
+    guardarMuestra (key) {
+      var polucion = Number(this.Polucion)
+      var gas = Number(this.Gas)
+      var temperatura = Number(this.Temperatura)
+      var humedad = Number(this.Humedad)
+      var lat = Number(this.Ubicacion.lat)
+      var lng = Number(this.Ubicacion.lng)
+      var date = new Date()
+      var hora = Number(date.getHours())
+      console.log(hora)
+      db.ref('Mediciones/' + key + '/Muestras').push({
+        Hora: hora,
+        Polucion: polucion,
+        Temperatura: temperatura,
+        Humedad: humedad,
+        Gas: gas,
+        Gps: {
+          lat: lat,
+          lng: lng
         }
+      }).then((data) => {
+        console.log('guardado exitoso')
       })
     }
   },
   mounted () {
+  },
+  watch: {
+    top (val) {
+      this.bottom = !val
+    },
+    right (val) {
+      this.left = !val
+    },
+    bottom (val) {
+      this.top = !val
+    },
+    left (val) {
+      this.right = !val
+    }
   }
 }

@@ -15,6 +15,7 @@
     "adonis-websocket-client": "^1.0.2",
     "babel-runtime": "^6.23.0",
     "firebase": "^4.11.0",
+    "firebase-admin": "^5.12.0",
     "highcharts": "^6.0.7",
     "i": "^0.3.5",
     "indicative": "^2.2.1",

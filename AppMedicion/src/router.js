@@ -19,7 +19,6 @@ const router = new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     route('/login', 'Login', 'login'),
-    route('/error', 'Error', 'error'),
 
     // path, file(*.vue), name, children
 
@@ -28,9 +27,7 @@ const router = new Router({
       route('/Mediciones', 'Mediciones'),
       route('/Mapas', 'Mapas'),
       route('/Nueva/medicion', 'CrudGrid'),
-      route('/example', 'Example'),
-      route('/settings', 'Settings')
-
+      route('/detalle/medicion/:id', 'Medicion_detalle')
     ])
 
     // Global redirect for 404

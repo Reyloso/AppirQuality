@@ -21,10 +21,10 @@ div
               :type="e1 ? 'password' : 'text'"
               required)
         <div class="btn-gmail">
-            <v-btn class="entrar" dark large @click="login"><i class="material-icons icon">input</i> Iniciar Sesion  </v-btn>
+            <v-btn class="entrar" dark large @click="login()"><i class="material-icons icon">input</i> Iniciar Sesion  </v-btn>
         </div>
         <div class="btn-gmail">
-            <v-btn color="error" dark large><i class="material-icons icon">gmail</i> Iniciar Con Google</v-btn>
+            <v-btn color="error" dark large @click="loginWithGoogle()"><i class="material-icons icon">gmail</i> Iniciar Con Google</v-btn>
         </div>
 
 </template>
@@ -47,9 +47,31 @@ export default {
     }
   },
   created: function () {
-    this.autenticacion()
   },
   methods: {
+    loginWithGoogle () {
+      var provider = new firebase.auth.GoogleAuthProvider()
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
+      firebase.auth().signInWithPopup(provider).then(function (result) {
+        // var token = result.credential.accessToken
+        // The signed-in user info.
+        this.$router.push({ path: `/` })
+        // ...
+      }).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code
+        console.log(errorCode)
+        var errorMessage = error.message
+        console.log(errorMessage)
+        // The email of the user's account used.
+        var email = error.email
+        console.log(email)
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential
+        console.log(credential)
+        // ...
+      })
+    },
     login () {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).catch(function (error) {
         // Handle Errors here.
@@ -58,11 +80,16 @@ export default {
         console.log(errorCode)
         console.log(errorMessage)
       }).then(function () {
-        this.autenticacion()
+        this.$router.push({ path: `/` })
       })
     }
   },
   mounted () {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user != null) {
+        this.$router.push({ path: `/` })
+      }
+    })
   }
 }
 </script>
@@ -137,4 +164,67 @@ export default {
     padding-right: 0px;
     padding-left: 0px;
   }
+  @media only screen and (max-width: 3080px){
+    .dialog {
+      width: 411px;
+      height: 35%;
+    }
+  }
+
+  @media only screen and (max-width: 2080px){
+    .dialog {
+      width: 411px;
+      height: 50%;
+    }
+  }
+  @media only screen and (max-width: 1406px){
+    .dialog {
+      width: 411px;
+      height: 60%;
+    }
+  }
+
+  @media only screen and (max-width: 1366px){
+    .dialog {
+      width: 411px;
+      height: 70%;
+    }
+  }
+
+  @media only screen and (max-width: 768px){
+    .dialog {
+      width: 411px;
+      height: 45%;
+    }
+  }
+
+
+  @media only screen and (max-width: 414px){
+    .dialog {
+      width: 411px;
+      height: 60%;
+    }
+  }
+
+  @media only screen and (max-width: 375px){
+    .dialog {
+      width: 317px;
+      height: 65%;
+    }
+  }
+
+  @media only screen and (max-width: 360px){
+    .dialog {
+      width: 317px;
+      height: 70%;
+    }
+  }
+
+  @media only screen and (max-width: 320px){
+      .dialog {
+        width: 317px;
+        height: 80%;
+      }
+  }
+
 </style>

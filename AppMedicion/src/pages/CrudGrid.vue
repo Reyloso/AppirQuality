@@ -76,7 +76,9 @@
   </v-flex>
 
       </v-card>
+      
 </template>
+
 <script>
 import {mixin} from '../mixins'
 

@@ -1,9 +1,7 @@
 <template >
 
   <div class="v-container">
-    <highcharts :options="options" ref="highcharts"></highcharts>
-    <highcharts :options="options" ref="highcharts"></highcharts>
-
+    <highcharts :options='options' ref="highcharts"></highcharts>
   </div>
 
 </template>
@@ -35,7 +33,7 @@ export default {
           title: { text: 'Tiempo'
           },
           labels: {
-            format: '{value}' + ':00 H'
+            format: '{value}' + 'H'
           }
         },
         yAxis: {
@@ -51,7 +49,7 @@ export default {
         tooltip: {
           crosshairs: true,
           shared: true,
-          valueDecimals: 2
+          valueDecimals: 0
         },
         credits: {
           enabled: false
@@ -65,26 +63,28 @@ export default {
             }
           }
         },
-        series: [{name: 'Humedad',
-          marker: {
-            symbol: 'square'
-          },
-          data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, {
-            y: 26.5
-
-          }, 23.3, 18.3, 13.9, 9.6]
-        }, {
+        series: [{
           name: 'Temperatura',
           marker: {
             symbol: 'diamond'
           },
-          data: [{
-            y: 3.9
-
-          }, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+          data: [[8, 25]]
         }]
       }
     }
+  },
+  mounted () {
+    console.log('hola')
   }
 }
   </script>
+
+  <style>
+  .create {
+    position: absolute;
+  }
+  .create .btn--floating {
+    position: relative;
+  }
+
+  </style>
