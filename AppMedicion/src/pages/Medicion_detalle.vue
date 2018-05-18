@@ -1,6 +1,12 @@
 <template>
   <v-container  grid-list-xl>
-      <v-layout>
+    <v-layout>
+      <v-flex xs12 sm12 d-inline-block>
+        <v-btn color="primary" @click="AddMuestra()" class="mb-2 add2 button-add-new"><v-icon class="iconacount2">add</v-icon> Agregar Muestra</v-btn>
+        <v-btn color="primary" @click="detailgraphic()" class="mb-2 add2 button-add-new"><v-icon class="iconacount2">insert_chart</v-icon> Ver Graficas</v-btn>
+    </v-flex>
+    </v-layout>
+    <v-layout>
     <v-flex xs12 sm12 d-inline-block>
       <v-card>
         <v-card-media
@@ -27,11 +33,11 @@
         </v-card-media>
         <v-card-title>
           <div>
-            <h4>{{NombreM}}</h4>
-            <p>Lugar: {{LugarM}}</p>
-            <p>Fecha de creacion: {{FechaM}}</p>
-            <p>Tipo Medicion: {{TipoM}}</p>
-            <p>Usuario: {{UsuarioM}}</p>
+            <h5>{{NombreM}}</h5>
+            <p><b>Lugar:</b> {{LugarM}}</p>
+            <p><b>Fecha de creacion:</b> {{FechaM}}</p>
+            <p><b>Tipo Medicion:</b> {{TipoM}}</p>
+            <p><b>Usuario:</b> {{UsuarioM}}</p>
           </div>
         </v-card-title>
       </v-card>
@@ -40,10 +46,9 @@
 
   <v-layout>
     <v-flex xs12 sm12 d-inline-block>
-
       <v-card>
         <v-card-title>
-          <v-btn color="primary" @click="AddMuestra()" class="mb-2 add button-add-new">Agregar Muestra</v-btn>
+          <h5>Muestras</h5>
           <v-spacer></v-spacer>
           <v-text-field
             append-icon="search"
@@ -61,16 +66,12 @@
        sort-icon="mdi-menu-down"
        :search="search">
        <template slot="items" slot-scope="props">
-        <td>{{ props.item.Id }}</td>
          <td class="text-xs-right">{{ props.item.Hora }}</td>
          <td class="text-xs-right">{{ props.item.Polucion }}</td>
          <td class="text-xs-right">{{ props.item.Humedad }}</td>
          <td class="text-xs-right">{{ props.item.Temperatura }}</td>
          <td class="text-xs-right">{{ props.item.Gas }}</td>
          <td class="justify-center layout px-0">
-           <v-btn icon class="mx-0" @click="editItem(props.item)">
-             <v-icon class="button-edit" color="teal">edit</v-icon>
-           </v-btn>
            <v-btn icon class="mx-0" @click="deleteItem(props.item)">
              <v-icon class="button-delete" color="pink">delete</v-icon>
            </v-btn>
@@ -80,50 +81,6 @@
          Your search for "{{ search }}" found no results.
        </v-alert>
      </v-data-table>
-    </v-card>
-  </v-flex>
-  </v-layout>
-  <v-layout>
-    <v-flex xs12 sm12 d-inline-block>
-      <v-card>
-        <v-card-media
-          class="white--text"
-          height="400px">
-      <highcharts :options="Temperatura" ref="highcharts"></highcharts>
-      </v-card-media>
-    </v-card>
-  </v-flex>
-  </v-layout>
-  <v-layout>
-    <v-flex xs12 sm12 d-inline-block>
-      <v-card>
-        <v-card-media
-          class="white--text"
-          height="400px">
-      <highcharts :options="Humedad" ref="highcharts"></highcharts>
-      </v-card-media>
-    </v-card>
-  </v-flex>
-  </v-layout>
-  <v-layout>
-    <v-flex xs12 sm12 d-inline-block>
-      <v-card>
-        <v-card-media
-          class="white--text"
-          height="400px">
-      <highcharts :options="Gas" ref="highcharts"></highcharts>
-      </v-card-media>
-    </v-card>
-  </v-flex>
-  </v-layout>
-  <v-layout>
-    <v-flex xs12 sm12 d-inline-block>
-      <v-card>
-        <v-card-media
-          class="white--text"
-          height="400px">
-      <highcharts :options="Polucion" ref="highcharts"></highcharts>
-      </v-card-media>
     </v-card>
   </v-flex>
   </v-layout>
@@ -167,202 +124,6 @@ export default {
   mixins: [mixin],
   data () {
     return {
-      Humedad: { // aqui cocmienza grafica de humedad
-        chart: {
-          type: 'area'
-        },
-        title: {
-          text: 'Grafica De Medicion De Humedad'
-        },
-        subtitle: {
-          text: 'Medicion De Calidad Del Aire'
-        },
-        xAxis: {
-          title: { text: 'Tiempo'
-          },
-          labels: {
-            format: '{value} ' + 'H:m'
-          }
-        },
-        yAxis: {
-          title: {
-            text: 'Humedad'
-          },
-          labels: {
-            formatter: function () {
-              return this.value + '%'
-            }
-          }
-        },
-        tooltip: {
-          pointFormat: '{series.name} <b>{point.y:,.0f} %</b><br/>Hora: {point.x}'
-        },
-        plotOptions: {
-          area: {
-            marker: {
-              enabled: false,
-              symbol: 'circle',
-              radius: 2,
-              states: {
-                hover: {
-                  enabled: true
-                }
-              }
-            }
-          }
-        },
-        series: [{
-          name: 'Humedad',
-          data: []
-        }]
-      }, // aqui termina
-      Gas: { // aqui cocmienza grafica de Gas
-        chart: {
-          type: 'area'
-        },
-        title: {
-          text: 'Grafica De Medicion De Gas'
-        },
-        subtitle: {
-          text: 'Medicion De Calidad Del Aire'
-        },
-        xAxis: {
-          title: { text: 'Tiempo'
-          },
-          labels: {
-            format: '{value} ' + 'H:m'
-          }
-        },
-        yAxis: {
-          title: {
-            text: 'Gas'
-          },
-          labels: {
-            formatter: function () {
-              return this.value + ' PPM'
-            }
-          }
-        },
-        tooltip: {
-          pointFormat: '{series.name} <b>{point.y:,.0f} PPM</b><br/>Hora: {point.x}'
-        },
-        plotOptions: {
-          area: {
-            marker: {
-              enabled: false,
-              symbol: 'circle',
-              radius: 2,
-              states: {
-                hover: {
-                  enabled: true
-                }
-              }
-            }
-          }
-        },
-        series: [{
-          name: 'Gas',
-          data: []
-        }]
-      }, // aqui termina
-      Polucion: { // aqui cocmienza grafica de Polucion
-        chart: {
-          type: 'area'
-        },
-        title: {
-          text: 'Grafica De Medicion De Polucion'
-        },
-        subtitle: {
-          text: 'Medicion De Calidad Del Aire'
-        },
-        xAxis: {
-          title: { text: 'Tiempo'
-          },
-          labels: {
-            format: '{value} ' + 'H:m'
-          }
-        },
-        yAxis: {
-          title: {
-            text: 'Concentracion'
-          },
-          labels: {
-            formatter: function () {
-              return this.value + ' Concentracion'
-            }
-          }
-        },
-        tooltip: {
-          pointFormat: '{series.name} <b>{point.y:,.0f} PPM</b><br/>Hora: {point.x}'
-        },
-        plotOptions: {
-          area: {
-            marker: {
-              enabled: false,
-              symbol: 'circle',
-              radius: 2,
-              states: {
-                hover: {
-                  enabled: true
-                }
-              }
-            }
-          }
-        },
-        series: [{
-          name: 'Polucion',
-          data: []
-        }]
-      }, // aqui termina
-      Temperatura: { // aqui cocmienza grafica de humedad
-        chart: {
-          type: 'area'
-        },
-        title: {
-          text: 'Grafica De Medicion De Temperatura'
-        },
-        subtitle: {
-          text: 'Medicion De Calidad Del Aire'
-        },
-        xAxis: {
-          title: { text: 'Tiempo'
-          },
-          labels: {
-            format: '{value} ' + 'H:m'
-          }
-        },
-        yAxis: {
-          title: {
-            text: 'Humedad'
-          },
-          labels: {
-            formatter: function () {
-              return this.value + ' C'
-            }
-          }
-        },
-        tooltip: {
-          pointFormat: '{series.name} <b>{point.y:,.0f} °C</b><br/> Hora: {point.x}'
-        },
-        plotOptions: {
-          area: {
-            marker: {
-              enabled: false,
-              symbol: 'circle',
-              radius: 2,
-              states: {
-                hover: {
-                  enabled: true
-                }
-              }
-            }
-          }
-        },
-        series: [{
-          name: 'Temperatura',
-          data: []
-        }]
-      },
       FechaM: '',
       NombreM: '',
       LugarM: '',
@@ -377,18 +138,18 @@ export default {
       search: '',
       // aqui comienza tabla
       headers: [
-        {
-          text: 'Id Me',
-          align: 'left',
-          sortable: true,
-          value: 'Id'
-        },
+      //  {
+      //    text: 'Id Me',
+      //    align: 'left',
+      //    sortable: true,
+      //    value: 'Id'
+      //  },
           { text: 'Hora', value: 'Hora' },
           { text: 'Polucion(Concentracion)', align: 'center', value: 'Polucion' },
-          { text: 'Humedad', value: 'Humedad' },
-          { text: 'Temperatura', value: 'Temperatura' },
-            { text: 'Gas', value: 'Gas' },
-          { text: 'Actions', value: 'name', sortable: false }
+          { text: 'Humedad(%)', value: 'Humedad' },
+          { text: 'Temperatura(°C)', value: 'Temperatura' },
+            { text: 'Gas(PPM)', value: 'Gas' },
+          { text: 'Eliminar', value: 'name', sortable: false }
       ]
     }
   },
@@ -396,19 +157,25 @@ export default {
     clearInterval(this.interval)
   },
   mounted () {
+    this.conectarParticle()
     this.cargarElementos()
   },
   methods: {
+    detailgraphic () {
+      var key = this.$route.params.Id
+      this.$router.push({name: 'detalle_grafica', params: { Id: key }})
+    },
+    deleteItem (item) {
+      var key = this.$route.params.Id
+      console.log(key)
+      var itemBorrar = firebase.database().ref('Mediciones/' + key + '/Muestras/' + item.Id)
+      itemBorrar.remove()
+    },
     cargarElementos () {
-      var key = this.$route.params.id
+      var key = this.$route.params.Id
       var center = {}
       var datos2 = []
       var datosMuestra = []
-      var datosTemperatura = []
-      var datosGas = []
-      var datosHumedad = []
-      var datosPolucion = []
-      var arrayaux = []
       var medicion = ''
       var nombre = ''
       var lugar = ''
@@ -416,19 +183,17 @@ export default {
       var usuario = ''
       var tipo = ''
       var item = firebase.database().ref('Mediciones/' + key)
+      console.log(key)
       item.on('value', function (snapshot) {
         datos2.length = 0
         datosMuestra.length = 0
-        datosHumedad.length = 0
-        datosGas.length = 0
-        datosPolucion.length = 0
-        arrayaux.length = 0
-        datosTemperatura.length = 0
         center = {}
         medicion = snapshot.val()
+        console.log(medicion.Lugar)
         lugar = medicion.Lugar
         fecha = medicion.Fecha
         usuario = medicion.Usuario
+        nombre = medicion.Nombre
         tipo = medicion.Tipo
         var lat = Number(medicion.Gps.lat)
         var lng = Number(medicion.Gps.lng)
@@ -439,28 +204,20 @@ export default {
         center = {lat: lat,
           lng: lng}
         for (var key in medicion.Muestras) {
-          var id = key
+          var Id = key
           var hora = medicion.Muestras[key].Hora
           var polucion = medicion.Muestras[key].Polucion
           var temperatura = medicion.Muestras[key].Temperatura
           var humedad = medicion.Muestras[key].Humedad
           var gas = medicion.Muestras[key].Gas
           datosMuestra.push({
-            Id: id,
+            Id: Id,
             Hora: hora,
             Polucion: polucion,
             Temperatura: temperatura,
             Humedad: humedad,
             Gas: gas
           })
-          arrayaux = [Number(hora), Number(humedad)]
-          datosHumedad.push(arrayaux)
-          arrayaux = [Number(hora), Number(gas)]
-          datosGas.push(arrayaux)
-          arrayaux = [Number(hora), Number(polucion)]
-          datosPolucion.push(arrayaux)
-          arrayaux = [Number(hora), Number(temperatura)]
-          datosTemperatura.push(arrayaux)
         }
       })
       this.items = datosMuestra
@@ -472,14 +229,11 @@ export default {
       this.TipoM = tipo
       this.center = center
       this.markers = datos2
-      this.Humedad.series[0].data = datosHumedad
-      this.Gas.series[0].data = datosGas
-      this.Polucion.series[0].data = datosPolucion
-      this.Temperatura.series[0].data = datosTemperatura
     },
     AddMuestra () {
+      this.conectarParticle()
       this.dialog = true
-      var key = this.$route.params.id
+      var key = this.$route.params.Id
       this.interval = setInterval(() => {
         if (this.value === 100) {
           this.guardarMuestra(key)
@@ -494,7 +248,12 @@ export default {
 }
 </script>
 <style>
-.add {
+
+.add2 {
   color: #fff !important;
+}
+.iconacount2 {
+  color: #fff !important;
+  padding-right: 5px !important;
 }
 </style>

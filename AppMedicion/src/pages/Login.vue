@@ -4,7 +4,7 @@ div
         v-card-title
               <v-avatar> <img src="/static/logo.png" alt="John"></v-avatar>
 
-        form(v-model="valid")
+        form(v-model="valid" v-show="ver")
             v-text-field(
             label="E-mail"
             v-model="email"
@@ -20,11 +20,26 @@ div
               :append-icon-cb="() => (e1 = !e1)"
               :type="e1 ? 'password' : 'text'"
               required)
-        <div class="btn-gmail">
+            <a @click="verlogin()"> olvido su contraseña?</a>
+        <div class="btn-gmail" v-show="ver">
             <v-btn class="entrar" dark large @click="login()"><i class="material-icons icon">input</i> Iniciar Sesion  </v-btn>
         </div>
-        <div class="btn-gmail">
+        <div class="btn-gmail" v-show="ver">
             <v-btn color="error" dark large @click="loginWithGoogle()"><i class="material-icons icon">gmail</i> Iniciar Con Google</v-btn>
+        </div>
+
+        form(v-model="valid" v-show="restore")
+            v-text-field(
+            label="E-mail"
+            v-model="email"
+            :rules="emailRules"
+            required)
+
+        <div class="btn-gmail" v-show="restore">
+            <v-btn class="entrar" dark large @click="restorePass()"> Restaurar  </v-btn>
+        </div>
+        <div class="btn-gmail" v-show="restore">
+            <v-btn color="error" dark large @click="verlogin()"> Volver a Iniciar Sesion</v-btn>
         </div>
 
 </template>
@@ -38,7 +53,9 @@ export default {
   data () {
     return {
       e1: true,
+      ver: true,
       valid: false,
+      restore: false,
       model: {
         email: '',
         password: ''
@@ -49,6 +66,22 @@ export default {
   created: function () {
   },
   methods: {
+    verlogin () {
+      if (this.restore === false) {
+        this.restore = true
+        this.ver = false
+      } else {
+        this.restore = false
+        this.ver = true
+      }
+    },
+    restorePass () {
+      firebase.auth().sendPasswordResetEmail(this.email).then(function () {
+      }).catch(function (error) {
+        console.log(error)
+      })
+      this.email = ''
+    },
     loginWithGoogle () {
       var provider = new firebase.auth.GoogleAuthProvider()
       provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
@@ -174,20 +207,20 @@ export default {
   @media only screen and (max-width: 2080px){
     .dialog {
       width: 411px;
-      height: 50%;
+      height: 60%;
     }
   }
   @media only screen and (max-width: 1406px){
     .dialog {
       width: 411px;
-      height: 60%;
+      height: 65%;
     }
   }
 
   @media only screen and (max-width: 1366px){
     .dialog {
       width: 411px;
-      height: 70%;
+      height: 80%;
     }
   }
 

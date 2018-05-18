@@ -158,13 +158,6 @@ export default {
         this.drawer = true
       }
     },
-    modaladd () {
-      if (this.dialogadd === false) {
-        this.dialogadd = true
-      } else {
-        this.dialogadd = false
-      }
-    },
     submit () {
       if (this.Lugar !== '' && this.Nombre !== '' && this.Tipo !== null) {
         this.guardarfirebase(this.Lugar, this.Nombre, this.Tipo)

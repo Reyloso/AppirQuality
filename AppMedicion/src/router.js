@@ -27,7 +27,8 @@ const router = new Router({
       route('/Mediciones', 'Mediciones'),
       route('/Mapas', 'Mapas'),
       route('/Nueva/medicion', 'CrudGrid'),
-      route('/detalle/medicion/:id', 'Medicion_detalle')
+      route('/detalle/medicion/:Id', 'Medicion_detalle'),
+      route('/detalle/medicion/graficas/:Id', 'Medicion_detalle_grafica', 'detalle_grafica')
     ])
 
     // Global redirect for 404

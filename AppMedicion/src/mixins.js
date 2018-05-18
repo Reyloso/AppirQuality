@@ -23,8 +23,8 @@ export const mixin = {
     transition: 'slide-y'
   }),
   created: function () {
-    this.conectarParticle()
     this.autenticacion()
+    this.conectarParticle()
   },
   computed: {
   },
@@ -39,11 +39,11 @@ export const mixin = {
     },
     conectarParticle () {
       // console.log('Conectando a Particle ..')
-      var id = '350045000d51353532343635'
+      var Id = '350045000d51353532343635'
       var token = 'ffb366eb43a2003f2f01f5b8ebc8d0bb2f440cb0'
 
       const API_URL = 'https://api.spark.io/v1/devices/'
-      var eventSource = new EventSource(API_URL + id + '/events/?access_token=' + token)
+      var eventSource = new EventSource(API_URL + Id + '/events/?access_token=' + token)
 
       eventSource.addEventListener('open', (e) => {
       }, false)
@@ -62,6 +62,10 @@ export const mixin = {
         this.Temperatura = data.Temperatura
       }, false)
       return eventSource
+    },
+    cerrar () {
+      var cerrar = this.conectarParticle()
+      cerrar.close()
     },
     guardarfirebase (lugar, Nombre, select) {
       var user = firebase.auth().currentUser
@@ -90,7 +94,7 @@ export const mixin = {
       var lat = Number(this.Ubicacion.lat)
       var lng = Number(this.Ubicacion.lng)
       var date = new Date()
-      var hora = Number(date.getHours())
+      var hora = Number(date.getHours() + '.' + date.getMinutes())
       console.log(hora)
       db.ref('Mediciones/' + key + '/Muestras').push({
         Hora: hora,
