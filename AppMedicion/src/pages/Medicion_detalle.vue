@@ -21,6 +21,7 @@
       v-for="(m, index) in markers"
       :position="m.position"
       :clickable="true"
+      ref="map"
 
       ></gmap-marker>
       </gmap-map>
@@ -161,6 +162,23 @@ export default {
     this.cargarElementos()
   },
   methods: {
+    getRoute: function () {
+      this.directionsService = new VueGoogleMaps.DirectionsService()
+      this.directionsDisplay = new VueGoogleMaps.DirectionsRenderer()
+      this.directionsDisplay.setMap(this.$refs.map.$mapObject)
+      var vm = this
+      vm.directionsService.route({
+        origin: {lat: 8.7420823, lng: -75.8923154},
+        destination: {lat: 8.7636645, lng: -75.8719631},
+        travelMode: 'DRIVING'
+      }, function (response, status) {
+        if (status === 'OK') {
+          vm.directionsDisplay.setDirections(response) // draws the polygon to the map
+        } else {
+          console.log('Directions request failed due to ' + status)
+        }
+      })
+    },
     detailgraphic () {
       var key = this.$route.params.Id
       this.$router.push({name: 'detalle_grafica', params: { Id: key }})

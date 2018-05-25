@@ -63,12 +63,12 @@ Vue.use(VueHighcharts, { Highcharts })
 export default {
   data () {
     return {
-      Temperatura: { // aqui cocmienza grafica de temperatura
+      Temperatura: {
         chart: {
-          type: 'area'
+          type: 'spline'
         },
         title: {
-          text: 'Grafica De Medicion De Temperatura'
+          text: 'Grafica de Medicion De Temperatura'
         },
         subtitle: {
           text: 'Medicion De Calidad Del Aire'
@@ -86,24 +86,22 @@ export default {
           },
           labels: {
             formatter: function () {
-              return this.value + 'Grados'
+              return this.value + '°'
             }
           }
         },
         tooltip: {
-          pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+          pointFormat: '{series.name} producida <b>{point.y:,.0f} °C </b><br/> Hora: {point.x}'
+        },
+        credits: {
+          enabled: false
         },
         plotOptions: {
-          area: {
+          spline: {
             marker: {
-              enabled: false,
-              symbol: 'circle',
-              radius: 2,
-              states: {
-                hover: {
-                  enabled: true
-                }
-              }
+              radius: 4,
+              lineColor: '#666666',
+              lineWidth: 1
             }
           }
         },
@@ -140,7 +138,7 @@ export default {
           }
         },
         tooltip: {
-          pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+          pointFormat: '{series.name} producida <b>{point.y:,.0f} %</b><br/> Hora: {point.x}'
         },
         plotOptions: {
           area: {
@@ -189,7 +187,7 @@ export default {
           }
         },
         tooltip: {
-          pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+          pointFormat: '{series.name} producido <b>{point.y:,.0f} PPM</b><br/> Hora: {point.x}'
         },
         plotOptions: {
           area: {
@@ -238,7 +236,7 @@ export default {
           }
         },
         tooltip: {
-          pointFormat: ''
+          pointFormat: '{series.name} producida <b>{point.y:,.0f} Concentracion en Mg/m3</b><br/> Hora: {point.x}'
         },
         plotOptions: {
           area: {

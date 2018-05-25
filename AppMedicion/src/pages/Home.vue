@@ -1,9 +1,13 @@
 <template >
-
-  <div class="v-container">
-    <highcharts :options='options' ref="highcharts"></highcharts>
-  </div>
-
+  <v-container>
+    <v-layout>
+   <v-flex xs12 sm14 >
+     <v-carousel delimiter-icon="stop" prev-icon="mdi-arrow-left" next-icon="mdi-arrow-right">
+       <v-carousel-item v-for="(item,i) in items" :src="item.src" :key="i"></v-carousel-item>
+    </v-carousel>
+   </v-flex>
+ </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -19,6 +23,20 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      items: [
+        {
+          src: './static/mapa.jpg'
+        },
+        {
+          src: './static/mediciones.jpg'
+        },
+        {
+          src: './static/graficas.jpg'
+        },
+        {
+          src: './static/medicion.jpg'
+        }
+      ],
       options: {
         chart: {
           type: 'spline'
@@ -85,6 +103,9 @@ export default {
   }
   .create .btn--floating {
     position: relative;
+  }
+  .card__media {
+    height: 425px !important;
   }
 
   </style>

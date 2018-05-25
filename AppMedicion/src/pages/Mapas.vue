@@ -1,16 +1,17 @@
 <template>
-  <gmap-map
+  <gmap-map ref="mapa"
 :center="center"
-:zoom="14"
+:zoom="13"
 style="width: 100%; height: 500px; padding-top:0px;">
 <gmap-marker
 :key="index"
 v-for="(m, index) in markers"
 :position="m.position"
 :clickable="true"
-
 ></gmap-marker>
 </gmap-map>
+
+
 </template>
 
 <script>
@@ -31,12 +32,14 @@ export default {
     return {
       modal: false,
       modal2: false,
-      center: {lat: 8.7455749, lng: -75.8800797},
+      center: {lat: 8.7511803, lng: -75.8784618},
       markers: []
     }
   },
   mounted () {
     this.cargarUbicaciones()
+    let map = this.$refs.mapa
+    console.log(map)
   },
   methods: {
     cargarUbicaciones () {
@@ -49,8 +52,6 @@ export default {
         for (var key in datos) {
           var lat = Number(datos[key].Gps.lat)
           var lng = Number(datos[key].Gps.lng)
-          console.log(lat)
-          console.log(lng)
           datos2.push({
             position: {lat: +lat, lng: +lng},
             type: 'info'
